@@ -4,4 +4,4 @@ jdk:
   - oraclejdk8
 cache:
 script:
-  - gradle clean build
+  - ./gradlew build
