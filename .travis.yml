@@ -3,7 +3,7 @@ sudo: true
 jdk:
   - oraclejdk8
 install:
-  - gradle wrapper --gradle-version 4.2
+  - gradle wrapper --gradle-version 5.1.1
 before_script:
   - chmod +x gradlew
 script:
