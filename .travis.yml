@@ -2,6 +2,8 @@ language: java
 sudo: true
 jdk:
   - oraclejdk8
+before_install:
+  - chmod +x gradlew
 script:
   - ./gradlew build
 after_success:
