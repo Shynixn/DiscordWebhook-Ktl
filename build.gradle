@@ -40,7 +40,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version: '3.3.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
-
     compileOnly 'org.spigotmc:spigot111R1:1.11.0-R1.0'
 
     testCompile 'org.mockito:mockito-core:2.23.0'
