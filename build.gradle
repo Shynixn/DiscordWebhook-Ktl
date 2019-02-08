@@ -78,8 +78,6 @@ task downloadDependencies(type:Exec) {
     text += " && java -jar BuildTools.jar --rev 1.11"
     text += " && mvn install:install-file -Dfile=spigot-1.11.jar -DgroupId=org.spigotmc -DartifactId=spigot111R1 -Dversion=1.11.0-R1.0 -Dpackaging=jar"
 
-    println "Downloading and installing spigot dependencies... This may take a while..."
-
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine 'cmd', '/c', text
     } else {
