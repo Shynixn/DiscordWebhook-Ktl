@@ -74,10 +74,12 @@ task downloadDependencies(type:Exec) {
     }
 
     def text = "cd build/buildtools"
+    text += " && java -jar BuildTools.jar --rev 1.11"
+    text += " && mvn install:install-file -Dfile=spigot-1.11.jar -DgroupId=org.spigotmc -DartifactId=spigot111R1 -Dversion=1.11.0-R1.0 -Dpackaging=jar"
 
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine 'cmd', '/c', text
     } else {
-        commandLine text
+        commandLine 'sh', text
     }
 }
