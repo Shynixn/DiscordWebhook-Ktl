@@ -3,6 +3,7 @@ package com.github.shynixn.discordwebhook.impl
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.ObjectWriter
 import com.github.shynixn.discordwebhook.contract.ConnectionService
+import org.bukkit.entity.Player
 import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 
@@ -38,6 +39,9 @@ class ConnectionServiceImpl : ConnectionService {
      * Creates a new connection client.
      */
     override fun createClient(): Client {
+        val player : Player? = null
+        player!!.updateInventory()
+
         return ClientBuilder.newBuilder().build()
     }
 

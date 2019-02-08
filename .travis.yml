@@ -5,6 +5,7 @@ jdk:
 before_install:
   - chmod +x gradlew
 script:
+  - if [[ $TRAVIS_COMMIT_MESSAGE == *"-- refresh-dependencies"* ]]; ./gradlew downloadDependencies ; fi ;
   - ./gradlew build
   - ./gradlew jacocoTestReport
 after_success:

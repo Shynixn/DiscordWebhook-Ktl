@@ -11,6 +11,7 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 test {
@@ -26,10 +27,6 @@ test {
     onOutput { descriptor, event ->
         logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
     }
-
-    jacoco {
-        excludes += ['com/github/shynixn/discordwebhook/entity/**', 'com/github/shynixn/discordwebhook/impl/ConnectionServiceImpl']
-    }
 }
 
 jacocoTestReport {
@@ -44,6 +41,8 @@ dependencies {
     compile group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version: '3.3.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
 
+    compileOnly 'org.spigotmc:spigot111R1:1.11.0-R1.0'
+
     testCompile 'org.mockito:mockito-core:2.23.0'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'
     testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.1'
@@ -54,4 +53,36 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+task downloadDependencies(type:Exec) {
+    def build = new File('build')
+
+    if(!build.exists()){
+        build.mkdir()
+    }
+
+    def folder = new File(build, 'buildtools')
+
+    if(!folder.exists()){
+        folder.mkdir()
+    }
+
+    def file = new File(folder, "BuildTools.jar")
+
+    if (!file.exists()) {
+        new URL('https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar').withInputStream{ i -> file.withOutputStream{ it << i }}
+    }
+
+    def text = "cd build/buildtools"
+    text += " && java -jar BuildTools.jar --rev 1.11"
+    text += " && mvn install:install-file -Dfile=spigot-1.11.jar -DgroupId=org.spigotmc -DartifactId=spigot111R1 -Dversion=1.11.0-R1.0 -Dpackaging=jar"
+
+    println "Downloading and installing spigot dependencies... This may take a while..."
+
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', text
+    } else {
+        commandLine text
+    }
 }
