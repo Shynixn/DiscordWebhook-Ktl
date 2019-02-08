@@ -4,7 +4,6 @@ jdk:
   - oraclejdk8
 before_install:
   - chmod +x gradlew
-after_install:
   - if [[ $TRAVIS_COMMIT_MESSAGE == *"-- refresh-dependencies"* ]]; ./gradlew downloadDependencies ; fi ;
 script:
   - ./gradlew build
