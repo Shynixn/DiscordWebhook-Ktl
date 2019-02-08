@@ -28,6 +28,13 @@ test {
     }
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version: '3.3.0'
