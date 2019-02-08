@@ -26,6 +26,10 @@ test {
     onOutput { descriptor, event ->
         logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
     }
+
+    jacoco {
+        excludes += ['com/github/shynixn/discordwebhook/entity/**', 'com/github/shynixn/discordwebhook/impl/ConnectionServiceImpl']
+    }
 }
 
 jacocoTestReport {
