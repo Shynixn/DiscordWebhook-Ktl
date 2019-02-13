@@ -40,7 +40,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version: '3.3.0'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
-    compileOnly 'org.spigotmc:spigot111R1:1.11.0-R1.0'
 
     testCompile 'org.mockito:mockito-core:2.23.0'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'
@@ -52,6 +51,20 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+task generateWikiPages(type:Exec){
+    file( 'docs/build').deleteDir()
+
+    def command = "sphinx-build -M html docs/source docs/build"
+
+    standardOutput = new ByteArrayOutputStream()
+
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', command
+    } else {
+        commandLine 'sh', '-c', command
+    }
 }
 
 task downloadDependencies(type:Exec) {

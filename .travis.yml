@@ -4,8 +4,11 @@ jdk:
   - oraclejdk8
 before_install:
   - chmod +x gradlew
-  - if [[ $TRAVIS_COMMIT_MESSAGE == *"--refresh-dependencies"* ]]; then ./gradlew downloadDependencies --debug ; fi ;
+  - pip install Sphinx
+ #- if [[ $TRAVIS_COMMIT_MESSAGE == *"--refresh-dependencies"* ]]; then ./gradlew downloadDependencies --debug ; fi ;
 script:
+  - pip install https://github.com/Shynixn/sphinx_rtd_theme/archive/C1.0.zip
+  - ./gradlew generateWikiPages
   - ./gradlew build
   - ./gradlew jacocoTestReport
 after_success:
