@@ -8,13 +8,12 @@ before_install:
   - sudo apt-get install python3-sphinx
  #- if [[ $TRAVIS_COMMIT_MESSAGE == *"--refresh-dependencies"* ]]; then ./gradlew downloadDependencies --debug ; fi ;
 script:
-  - pip3 install https://github.com/Shynixn/sphinx_rtd_theme/archive/C1.0.zip
+  - sudo pip3 install https://github.com/Shynixn/sphinx_rtd_theme/archive/C1.0.zip
   - ./gradlew generateWikiPages
   - git config --global user.email "travis@travis-ci.org" && git config --global user.name "Travis CI"
-  - git checkout -b master
   - git add docs
-  - git commit --message "Travis build: $TRAVIS_BUILD_NUMBER"
-  - git remote add origin-master https://${GH_TOKEN}@github.com/Shynixn/DiscordWebhook-Ktl.git
+  - git commit --message "Travis build $TRAVIS_BUILD_NUMBER"
+  - git remote add origin-master https://$GH_TOKEN@github.com/Shynixn/DiscordWebhook-Ktl.git
   - git push --quiet --set-upstream origin-master master
   - ./gradlew build
   - ./gradlew jacocoTestReport
