@@ -14,8 +14,7 @@ script:
   - git config --global user.email "travis@travis-ci.org" && git config --global user.name "Travis CI"
   - git add docs
   - git commit --message "Travis build $TRAVIS_BUILD_NUMBER"
-  - git remote add origin-master https://Shynixn:$GH_TOKEN@github.com/Shynixn/DiscordWebhook-Ktl.git
-  - git push --quiet --set-upstream origin-master master
+  - git push --quiet https://Shynixn:$GH_TOKEN@github.com/Shynixn/DiscordWebhook-Ktl.git
   - ./gradlew build
   - ./gradlew jacocoTestReport
 after_success:
