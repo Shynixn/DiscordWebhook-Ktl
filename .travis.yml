@@ -21,3 +21,11 @@ script:
   - ./gradlew jacocoTestReport
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+deploy:
+  provider: releases
+  api_key:
+    secure: $GH_TOKEN
+  file: "README.md"
+  skip_cleanup: true
+  on:
+    tags: true
