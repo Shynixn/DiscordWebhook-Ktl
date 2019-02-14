@@ -1,8 +1,19 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.17"
+    }
+}
+
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.20'
 }
 
 apply plugin: 'jacoco'
+apply plugin: 'org.jetbrains.dokka'
 
 group 'com.github.shynixn'
 version '1.0'
@@ -53,10 +64,15 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+task generateJavaDocPages(type: org.jetbrains.dokka.gradle.DokkaTask){
+    outputFormat = 'javadoc'
+    outputDirectory = "docs/apidocs"
+}
+
 task generateWikiPages(type:Exec){
     file( 'docs/build').deleteDir()
 
-    def command = "sphinx-build -M html docs/source docs/build"
+    def command = "python -msphinx -M html docs/source docs/build"
 
     standardOutput = new ByteArrayOutputStream()
 
