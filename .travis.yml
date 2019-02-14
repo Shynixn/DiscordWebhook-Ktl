@@ -9,7 +9,7 @@ before_install:
   - sudo apt-get install python3-sphinx
  #- if [[ $TRAVIS_COMMIT_MESSAGE == *"--refresh-dependencies"* ]]; then ./gradlew downloadDependencies --debug ; fi ;
 script:
-  - sudo pip3 install https://github.com/Shynixn/sphinx_rtd_theme/archive/C1.0.zip
+  - sudo pip3 install https://github.com/Shynixn/sphinx_rtd_theme/releases/download/C1.0/sphinx_rtd_theme.zip
   - ./gradlew generateWikiPages
   - git config --global user.email "travis@travis-ci.org" && git config --global user.name "Travis CI"
   - git add docs
