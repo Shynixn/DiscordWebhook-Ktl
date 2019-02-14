@@ -29,6 +29,6 @@ deploy:
   file: "README.md"
   skip_cleanup: true
   on:
-    branch: release
+    branch: master
     #condition: $MY_ENV = super_awesome
     tags: false
