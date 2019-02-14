@@ -23,6 +23,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: releases
+  body: "This release was created by Travis build $TRAVIS_BUILD_NUMBER. Patch-Notes will be added later by the developer."
   api_key:
     secure: $GH_TOKEN
   file: "README.md"
