@@ -5,30 +5,8 @@ jdk:
 before_install:
   - chmod +x gradlew
   - sudo apt-get install python3-pip
-  #- sudo apt-get install python-sphinx
- #- if [[ $TRAVIS_COMMIT_MESSAGE == *"--refresh-dependencies"* ]]; then ./gradlew downloadDependencies --debug ; fi ;
 script:
-  - sudo pip3 install https://github.com/Shynixn/sphinx_rtd_theme/releases/download/C1.0/sphinx_rtd_theme.zip
-  - sudo pip3 install -U sphinx
-  - rm -rf docs/build
-  - rm -rf docs/apidocs
-  - python3 -msphinx -M html docs/source docs/build
-  - git config --global user.email "travis@travis-ci.org" && git config --global user.name "Travis CI"
-  - git add docs
-  - git commit --message "Travis build $TRAVIS_BUILD_NUMBER [skip travis-ci]"
-  - git push --quiet https://Shynixn:$GH_TOKEN@github.com/Shynixn/DiscordWebhook-Ktl.git HEAD:master
-  - ./gradlew build
-  - ./gradlew jacocoTestReport
+  - gradlew build
+  - gradlew jacocoTestReport
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-deploy:
-  provider: releases
-  body: "This release was created by Travis build $TRAVIS_BUILD_NUMBER. Patch-Notes will be added later by the developer."
-  api_key:
-    secure: $GH_TOKEN
-  file: "README.md"
-  skip_cleanup: true
-  on:
-    branch: master
-    #condition: $MY_ENV = super_awesome
-    tags: false

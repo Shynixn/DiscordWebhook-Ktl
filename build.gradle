@@ -9,11 +9,14 @@ buildscript {
 }
 
 plugins {
+    id 'com.github.johnrengelman.shadow' version '4.0.2'
     id 'org.jetbrains.kotlin.jvm' version '1.3.20'
 }
 
 apply plugin: 'jacoco'
 apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 group 'com.github.shynixn'
 version '1.0'
@@ -47,6 +50,12 @@ jacocoTestReport {
     }
 }
 
+shadowJar{
+    archiveName = "$baseName-$version.$extension"
+
+    relocate 'kotlin', 'com.github.shynixn.petblocks.lib.kotlin'
+}
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version: '3.3.0'
@@ -64,53 +73,71 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-task generateJavaDocPages(type: org.jetbrains.dokka.gradle.DokkaTask){
+// Publish to Maven Central
+
+task sourceJar(type: Jar) {
+    classifier "sources"
+    from sourceSets.main.allJava
+}
+
+task dokkaJavadoc(type: org.jetbrains.dokka.gradle.DokkaTask) {
     outputFormat = 'javadoc'
-    outputDirectory = "docs/apidocs"
+    outputDirectory = "$buildDir/javadoc"
 }
 
-task generateWikiPages(type:Exec){
-    file( 'docs/build').deleteDir()
-
-    def command = "python -msphinx -M html docs/source docs/build"
-
-    standardOutput = new ByteArrayOutputStream()
-
-    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine 'cmd', '/c', command
-    } else {
-        commandLine 'sh', '-c', command
-    }
+task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    classifier = 'javadoc'
+    from "$buildDir/javadoc"
 }
 
-task downloadDependencies(type:Exec) {
-    def build = new File('build')
+artifacts {
+    archives shadowJar
+    archives sourceJar
+    archives javadocJar
+}
 
-    if(!build.exists()){
-        build.mkdir()
-    }
+signing {
+    sign configurations.archives
+}
 
-    def folder = new File(build, 'buildtools')
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+            
+            pom.project {
+                name 'DiscordWebhook-Ktl'
+                packaging 'jar'
+                description 'DiscordWebhook-Ktl is a wrapper around the discord webhook bot REST api.'
+                url 'https://github.com/Shynixn/DiscordWebhook-Ktl'
 
-    if(!folder.exists()){
-        folder.mkdir()
-    }
+                scm {
+                    connection 'scm:git:git://github.com/Shynixn/DiscordWebhook-Ktl.git'
+                    developerConnection 'scm:git:ssh://github.com:Shynixn/DiscordWebhook-Ktl.git'
+                    url 'http://github.com/Shynixn/DiscordWebhook-Ktl.git/tree/master'
+                }
 
-    def file = new File(folder, "BuildTools.jar")
+                licenses {
+                    license {
+                        name 'MIT License'
+                        url 'http://www.opensource.org/licenses/mit-license.php'
+                    }
+                }
 
-    if (!file.exists()) {
-        new URL('https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar').withInputStream{ i -> file.withOutputStream{ it << i }}
-    }
-
-    def text = "cd build/buildtools"
-    text += " && java -jar BuildTools.jar --rev 1.11"
-    text += " && mvn install:install-file -Dfile=spigot-1.11.jar -DgroupId=org.spigotmc -DartifactId=spigot111R1 -Dversion=1.11.0-R1.0 -Dpackaging=jar"
-
-    standardOutput = new ByteArrayOutputStream()
-
-    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine 'cmd', '/c', text
-    } else {
-        commandLine 'sh', '-c', text
+                developers {
+                    developer {
+                        name 'Shynixn'
+                        url 'https://github.com/Shynixn'
+                    }
+                }
+            }
+        }
     }
 }
