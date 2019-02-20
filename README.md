@@ -20,7 +20,7 @@ DiscordWebhook-Ktl is a wrapper around the discord webhook bot REST api.
 <dependency>
   <groupId>com.github.shynixn</groupId>
   <artifactId>discordwebhook-ktl</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
 </dependency>
 ```
 

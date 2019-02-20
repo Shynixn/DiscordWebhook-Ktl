@@ -28,7 +28,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 
 group 'com.github.shynixn'
-version '1.1'
+version '1.2'
 
 test {
     useJUnitPlatform()
@@ -92,7 +92,6 @@ uploadArchives {
                     developerConnection 'scm:git:ssh://github.com:Shynixn/DiscordWebhook-Ktl.git'
                     url 'http://github.com/Shynixn/DiscordWebhook-Ktl.git/tree/master'
                 }
-
                 licenses {
                     license {
                         name 'MIT License'
