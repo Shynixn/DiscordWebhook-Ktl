@@ -6,7 +6,7 @@ before_install:
   - chmod +x gradlew
   - sudo apt-get install python3-pip
 script:
-  - gradlew build
-  - gradlew jacocoTestReport
+  - ./gradlew build
+  - ./gradlew jacocoTestReport
 after_success:
   - bash <(curl -s https://codecov.io/bash)
