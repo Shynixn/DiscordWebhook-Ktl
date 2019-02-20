@@ -14,9 +14,37 @@ DiscordWebhook-Ktl is a wrapper around the discord webhook bot REST api.
 
 ## How to use it
 
-* Include it from the central maven repository.
+1: Include it from the central maven repository.
 
-* Use a Java sample:
+```xml
+<dependency>
+  <groupId>com.github.shynixn</groupId>
+  <artifactId>discordwebhook-ktl</artifactId>
+  <version>1.1</version>
+</dependency>
+```
+
+2: Include the following additional dependencies.
+
+```xml
+<dependency>
+    <groupId>org.jetbrains.kotlin</groupId>
+    <artifactId>kotlin-stdlib-jdk8</artifactId>
+    <version>1.3.21</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.cxf</groupId>
+    <artifactId>cxf-rt-rs-client</artifactId>
+    <version>3.3.0</version>
+</dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-databind</artifactId>
+    <version>2.9.8</version>
+</dependency>
+```
+
+3: Use a Java sample:
 ```java
 String webHookUrl = "yourDiscordWebHookUrlWhichYouCanDirectlyCopyPasteIntoThis";
 
@@ -31,7 +59,7 @@ payload.getEmbeds().add(embeddedMessage);
 service.sendDiscordPayload(webHookUrl, payload);
 ```
 
-* Use a Kotlin sample:
+3: Use a Kotlin sample:
 ```kotlin
 val webHookUrl = "yourDiscordWebHookUrlWhichYouCanDirectlyCopyPasteIntoThis";
 
